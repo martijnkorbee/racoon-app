@@ -20,6 +20,8 @@ func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
 
 // Sessions is the sessions route
 func (h *Handlers) SessionsTest(w http.ResponseWriter, r *http.Request) {
+	h.App.SessionManager.Put(r.Context(), "bar", "foo")
+
 	err := h.App.Render.Page(w, r, "sessions", nil, nil)
 	if err != nil {
 		h.App.ErrorLog.Println("error rendering", err)
