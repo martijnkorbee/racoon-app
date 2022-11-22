@@ -1,0 +1,24 @@
+{{extends "./layouts/base.jet"}}
+
+{{block browserTitleMsg()}}Sessions{{end}}
+
+{{block css()}}
+
+{{end}}
+
+{{block pageContent()}}
+<div class="col text-center">
+    <div class="d-flex align-items-center justify-content-center vh-100">
+        <div>
+            <img src="/public/images/GoRacoon.png" width="100" class="mb-5">
+            <h1>GoRacoon</h1>
+            <hr>
+            <small class="text-muted">Session data: </small>
+        </div>
+    </div>
+</div>
+{{end}}
+
+{{block js()}}
+
+{{end}}
