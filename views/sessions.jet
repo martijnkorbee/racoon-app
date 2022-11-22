@@ -13,7 +13,7 @@
             <img src="/public/images/GoRacoon.png" width="100" class="mb-5">
             <h1>GoRacoon</h1>
             <hr>
-            <small class="text-muted">Session data: </small>
+            <small class="text-muted">Session data: {{foo}}</small>
         </div>
     </div>
 </div>

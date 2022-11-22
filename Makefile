@@ -8,8 +8,8 @@ build:
 
 run: build
 	@echo "Starting GoRacoon..."
-	@./tmp/${BINARY_NAME} &
-	@echo "GoRacoon has been started!"
+	@./tmp/${BINARY_NAME}
+	
 
 clean:
 	@echo "Cleaning..."
@@ -22,7 +22,10 @@ test:
 	@go test ./...
 	@echo "Testing done!"
 
-start: run
+start: build
+	@echo "Starting GoRacoon..."
+	@./tmp/${BINARY_NAME} &
+	@echo "GoRacoon has been started!"
 
 stop:
 	@echo "Stopping GoRacoon..."
