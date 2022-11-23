@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"RacoonApp/data"
 	"net/http"
 
 	"github.com/CloudyKit/jet/v6"
@@ -8,7 +9,8 @@ import (
 )
 
 type Handlers struct {
-	App *GoRacoon.GoRacoon
+	App    *GoRacoon.GoRacoon
+	Models *data.Models
 }
 
 // Home is the home route
