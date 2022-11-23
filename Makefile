@@ -2,12 +2,12 @@ BINARY_NAME=RacoonApp
 
 build:
 	@go mod vendor
-	@echo "Building GoRacoon..."
+	@echo "Building ${BINARY_NAME}..."
 	@go build -o tmp/${BINARY_NAME} .
-	@echo "GoRacoon has been built!"
+	@echo "${BINARY_NAME} has been built!"
 
 run: build
-	@echo "Starting GoRacoon..."
+	@echo "Starting ${BINARY_NAME}..."
 	@./tmp/${BINARY_NAME}
 	
 
@@ -23,13 +23,13 @@ test:
 	@echo "Testing done!"
 
 start: build
-	@echo "Starting GoRacoon..."
+	@echo "Starting ${BINARY_NAME}..."
 	@./tmp/${BINARY_NAME} &
-	@echo "GoRacoon has been started!"
+	@echo "${BINARY_NAME} has been started!"
 
 stop:
-	@echo "Stopping GoRacoon..."
+	@echo "Stopping ${BINARY_NAME}..."
 	@-pkill -SIGTERM -f "./tmp/${BINARY_NAME}"
-	@echo "Stopped GoRacoon!"
+	@echo "Stopped ${BINARY_NAME}!"
 
 restart: stop start

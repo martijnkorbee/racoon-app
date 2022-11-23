@@ -8,6 +8,7 @@ require (
 	github.com/CloudyKit/jet/v6 v6.1.0
 	github.com/MartijnKorbee/GoRacoon v0.0.0-00010101000000-000000000000
 	github.com/go-chi/chi/v5 v5.0.7
+	github.com/upper/db/v4 v4.6.0
 )
 
 require (
@@ -22,6 +23,8 @@ require (
 	github.com/jackc/pgtype v1.12.0 // indirect
 	github.com/jackc/pgx/v4 v4.17.2 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
-	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
-	golang.org/x/text v0.3.7 // indirect
+	github.com/lib/pq v1.10.7 // indirect
+	github.com/segmentio/fasthash v1.0.3 // indirect
+	golang.org/x/crypto v0.3.0 // indirect
+	golang.org/x/text v0.4.0 // indirect
 )

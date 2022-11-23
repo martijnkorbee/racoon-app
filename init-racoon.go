@@ -1,6 +1,7 @@
 package main
 
 import (
+	"RacoonApp/data"
 	"RacoonApp/handlers"
 	"log"
 	"os"
@@ -33,6 +34,8 @@ func initApplication() *application {
 	}
 
 	app.App.Routes = app.routes()
+
+	app.Models = data.New(app.App.DB.ConnectionPool)
 
 	return app
 }
