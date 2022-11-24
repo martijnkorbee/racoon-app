@@ -9,6 +9,12 @@ func (h *Handlers) UserLogin(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (h *Handlers) UserLogout(w http.ResponseWriter, r *http.Request) {
+	h.App.SessionManager.RenewToken(r.Context())
+	h.App.SessionManager.Remove(r.Context(), "userID")
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
 func (h *Handlers) PostUserLogin(w http.ResponseWriter, r *http.Request) {
 	// parse the form post
 	err := r.ParseForm()
