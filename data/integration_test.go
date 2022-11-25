@@ -539,7 +539,7 @@ func TestToken_ValidateToken(t *testing.T) {
 		t.Error("valid token reported as invalid")
 	}
 
-	ok, err = models.Tokens.ValidateToken("invalid_token")
+	ok, _ = models.Tokens.ValidateToken("invalid_token")
 	if ok {
 		t.Error("invalid token reported as valid")
 	}
