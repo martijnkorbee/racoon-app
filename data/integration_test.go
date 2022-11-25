@@ -104,15 +104,6 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func TestUser_Table(t *testing.T) {
-	s := models.Users.Table()
-	if s != "users" {
-		t.Error("wrong table name returned: ", s)
-	}
-}
-
-
-
 func createTables(db *sql.DB) error {
 	// statement
 	stmt := `
@@ -184,4 +175,127 @@ CREATE TRIGGER set_timestamp
 	}
 
 	return nil
+}
+
+func TestUser_Table(t *testing.T) {
+	s := models.Users.Table()
+	if s != "users" {
+		t.Error("wrong table name returned: ", s)
+	}
+}
+
+func TestUser_AddUser(t *testing.T) {
+	id, err := models.Users.AddUser(dummyUser)
+	if err != nil {
+		t.Error("failed to insert user: ", err)
+	}
+
+	if id == 0 {
+		t.Error("0 returned as id after adding user")
+	}
+}
+
+func TestUser_GetAll(t *testing.T) {
+	_, err := models.Users.GetAll()
+	if err != nil {
+		t.Error("failed to get users: ", err)
+	}
+}
+
+func TestUser_GetUserByID(t *testing.T) {
+	u, err := models.Users.GetUserByID(1)
+	if err != nil {
+		t.Error("failed to get user: ", err)
+	}
+
+	if u.ID == 0 {
+		t.Error("ID of returned user is 0: ", err)
+	}
+}
+
+func TestUser_GetUserByEmail(t *testing.T) {
+	u, err := models.Users.GetUserByEmail(dummyUser.Email)
+	if err != nil {
+		t.Error("failed to get user: ", err)
+	}
+
+	if u.ID == 0 {
+		t.Error("ID of returned user is 0: ", err)
+	}
+}
+
+func TestUser_UpdateUser(t *testing.T) {
+	u, err := models.Users.GetUserByID(1)
+	if err != nil {
+		t.Error("failed to get user: ", err)
+	}
+
+	u.LastName = "Smith"
+	err = u.UpdateUser(*u)
+	if err != nil {
+		t.Error("failed to update user: ", err)
+	}
+
+	u, err = models.Users.GetUserByID(1)
+	if err != nil {
+		t.Error("failed to get updated user: ", err)
+	}
+
+	if u.LastName != "Smith" {
+		t.Error("last name not updated in database")
+	}
+}
+
+func TestUser_AuthenticateUser(t *testing.T) {
+	u, err := models.Users.GetUserByID(1)
+	if err != nil {
+		t.Error("failed to get user: ", err)
+	}
+
+	matches, err := u.AuthenticateUser(dummyUser.Password)
+	if err != nil {
+		t.Error("error checking authenticate: ", err)
+	}
+
+	if !matches {
+		t.Error("password doest not match when it should")
+	}
+
+	matches, err = u.AuthenticateUser("wrongpassword")
+	if err != nil {
+		t.Error("error checking authenticate: ", err)
+	}
+
+	if matches {
+		t.Error("password matches when it should")
+	}
+}
+
+func TestUser_ResetPassword(t *testing.T) {
+	err := models.Users.ResetPassword(1, "new_password")
+	if err != nil {
+		t.Error("error resetting password: ", err)
+	}
+
+	err = models.Users.ResetPassword(2, "new_password")
+	if err == nil {
+		t.Error("did not get error when resetting password for non existent user")
+	}
+}
+
+func TestUser_DeleteUser(t *testing.T) {
+	err := models.Users.DeleteUser(1)
+	if err != nil {
+		t.Error("failed to delete user: ", err)
+	}
+
+	_, err = models.Users.GetUserByID(1)
+	if err == nil {
+		t.Error("retrieved user that was supposed to be deleted")
+	}
+
+	err = models.Users.DeleteUser(2)
+	if err == nil {
+		t.Error("deleted user that did not exist")
+	}
 }

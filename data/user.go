@@ -25,6 +25,29 @@ func (u *User) Table() string {
 	return "users"
 }
 
+// AddUser adds a user
+func (u *User) AddUser(user User) (ID int, err error) {
+	// create password hash
+	newHash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
+	if err != nil {
+		return 0, err
+	}
+
+	user.CreatedAt = time.Now()
+	user.UpdatedAt = time.Now()
+	user.Password = string(newHash)
+
+	collection := upper.Collection(u.Table())
+	res, err := collection.Insert(user)
+	if err != nil {
+		return 0, err
+	}
+
+	id := getInsertID(res.ID())
+
+	return id, nil
+}
+
 // GetAll gets all users
 func (u *User) GetAll() ([]*User, error) {
 	var all []*User
@@ -39,12 +62,12 @@ func (u *User) GetAll() ([]*User, error) {
 	return all, nil
 }
 
-// GetUserByEmail gets user by email
-func (u *User) GetUserByEmail(email string) (*User, error) {
+// GetUserByID gets user by ID
+func (u *User) GetUserByID(ID int) (*User, error) {
 	var user User
 	collection := upper.Collection(u.Table())
 
-	res := collection.Find(up.Cond{"email =": email})
+	res := collection.Find(up.Cond{"id =": ID})
 	err := res.One(&user)
 	if err != nil {
 		return nil, err
@@ -66,12 +89,12 @@ func (u *User) GetUserByEmail(email string) (*User, error) {
 	return &user, nil
 }
 
-// GetUserByID gets user by ID
-func (u *User) GetUserByID(ID int) (*User, error) {
+// GetUserByEmail gets user by email
+func (u *User) GetUserByEmail(email string) (*User, error) {
 	var user User
 	collection := upper.Collection(u.Table())
 
-	res := collection.Find(up.Cond{"id =": ID})
+	res := collection.Find(up.Cond{"email =": email})
 	err := res.One(&user)
 	if err != nil {
 		return nil, err
@@ -117,29 +140,6 @@ func (u *User) DeleteUser(id int) error {
 	}
 
 	return nil
-}
-
-// AddUser adds a user
-func (u *User) AddUser(user User) (ID int, err error) {
-	// create password hash
-	newHash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
-	if err != nil {
-		return 0, err
-	}
-
-	user.CreatedAt = time.Now()
-	user.UpdatedAt = time.Now()
-	user.Password = string(newHash)
-
-	collection := upper.Collection(u.Table())
-	res, err := collection.Insert(user)
-	if err != nil {
-		return 0, err
-	}
-
-	id := getInsertID(res.ID())
-
-	return id, nil
 }
 
 // ResetPassword resets the users password
