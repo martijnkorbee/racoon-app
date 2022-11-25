@@ -10,6 +10,7 @@ import (
 	"log"
 	"os"
 	"testing"
+	"time"
 
 	_ "github.com/jackc/pgconn"
 	_ "github.com/jackc/pgx/v4"
@@ -297,5 +298,69 @@ func TestUser_DeleteUser(t *testing.T) {
 	err = models.Users.DeleteUser(2)
 	if err == nil {
 		t.Error("deleted user that did not exist")
+	}
+}
+
+func TestToken_Table(t *testing.T) {
+	s := models.Tokens.Table()
+	if s != "tokens" {
+		t.Error("wrong table name returned for tokens")
+	}
+}
+
+func TestToken_GenerateToken(t *testing.T) {
+	id, err := models.Users.AddUser(dummyUser)
+	if err != nil {
+		t.Error("error inserting user: ", err)
+	}
+
+	_, err = models.Tokens.GenerateToken(id, time.Hour*24*365)
+	if err != nil {
+		t.Error("error generating token: ", err)
+	}
+}
+
+func TestToken_InsertToken(t *testing.T) {
+	u, err := models.Users.GetUserByEmail(dummyUser.Email)
+	if err != nil {
+		t.Error("failed to get user: ", err)
+	}
+
+	token, err := models.Tokens.GenerateToken(u.ID, time.Hour*24*365)
+	if err != nil {
+		t.Error("error generating token: ", err)
+	}
+
+	err = models.Tokens.InsertToken(*token, *u)
+	if err != nil {
+		t.Error("error inserting token: ", err)
+	}
+}
+
+func TestToken_GetUserForToken(t *testing.T) {
+	_, err := models.Tokens.GetUserForToken("abc")
+	if err == nil {
+		t.Error("no error when getting user with invalid token")
+	}
+
+	u, err := models.Users.GetUserByEmail(dummyUser.Email)
+	if err != nil {
+		t.Error("failed to get user: ", err)
+	}
+
+	_, err = models.Tokens.GetUserForToken(u.Token.PlainText)
+	if err != nil {
+		t.Error("failed to get user with valid token: ", err)
+	}
+}
+
+func TestToken_GetTokensForUser(t *testing.T) {
+	tokens, err := models.Tokens.GetTokensForUser(1)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if len(tokens) > 0 {
+		t.Error("tokens returned for non existing user")
 	}
 }

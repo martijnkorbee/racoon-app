@@ -1,10 +1,10 @@
 package data
 
 import (
+	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base32"
 	"errors"
-	"math/rand"
 	"net/http"
 	"strings"
 	"time"
@@ -26,6 +26,50 @@ type Token struct {
 
 func (t *Token) Table() string {
 	return "tokens"
+}
+
+func (t *Token) GenerateToken(userID int, ttl time.Duration) (token *Token, err error) {
+	token = &Token{
+		UserID:  userID,
+		Expires: time.Now().Add(ttl),
+	}
+
+	randomBytes := make([]byte, 16)
+	_, err = rand.Read(randomBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	token.PlainText = base32.StdEncoding.WithPadding(base32.NoPadding).EncodeToString(randomBytes)
+	hash := sha256.Sum256([]byte(token.PlainText))
+
+	token.Hash = hash[:]
+
+	return token, nil
+}
+
+func (t *Token) InsertToken(token Token, u User) error {
+	collection := upper.Collection(t.Table())
+
+	// delete existing tokens
+	res := collection.Find(up.Cond{"user_id =": u.ID})
+	err := res.Delete()
+	if err != nil {
+		return err
+	}
+
+	// add new tokens
+	token.CreatedAt = time.Now()
+	token.UpdatedAt = time.Now()
+	token.FirstName = u.FirstName
+	token.Email = u.Email
+
+	_, err = collection.Insert(token)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (t *Token) GetUserForToken(token string) (u *User, err error) {
@@ -52,7 +96,7 @@ func (t *Token) GetUserForToken(token string) (u *User, err error) {
 
 func (t *Token) GetTokensForUser(id int) (tokens []*Token, err error) {
 	collection := upper.Collection(t.Table())
-	res := collection.Find(up.Cond{"userID =": id})
+	res := collection.Find(up.Cond{"user_id =": id})
 	err = res.All(&tokens)
 	if err != nil {
 		return nil, err
@@ -114,50 +158,6 @@ func (t *Token) DeleteTokenByToken(plainText string) error {
 	}
 
 	return nil
-}
-
-func (t *Token) InsertToken(token Token, u User) error {
-	collection := upper.Collection(t.Table())
-
-	// delete existing tokens
-	res := collection.Find(up.Cond{"user_id =": u.ID})
-	err := res.Delete()
-	if err != nil {
-		return err
-	}
-
-	// add new tokens
-	token.CreatedAt = time.Now()
-	token.UpdatedAt = time.Now()
-	token.FirstName = u.FirstName
-	token.Email = u.Email
-
-	_, err = collection.Insert(token)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (t *Token) GenerateToken(userID int, ttl time.Duration) (token *Token, err error) {
-	token = &Token{
-		UserID:  userID,
-		Expires: time.Now().Add(ttl),
-	}
-
-	randomBytes := make([]byte, 16)
-	_, err = rand.Read(randomBytes)
-	if err != nil {
-		return nil, err
-	}
-
-	token.PlainText = base32.StdEncoding.WithPadding(base32.NoPadding).EncodeToString(randomBytes)
-	hash := sha256.Sum256([]byte(token.PlainText))
-
-	token.Hash = hash[:]
-
-	return token, nil
 }
 
 func (t *Token) AuthenticateToken(r *http.Request) (u *User, err error) {

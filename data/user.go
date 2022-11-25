@@ -130,18 +130,6 @@ func (u *User) UpdateUser(user User) error {
 	return nil
 }
 
-// DeleteUser deletes a user
-func (u *User) DeleteUser(id int) error {
-	collection := upper.Collection(u.Table())
-	res := collection.Find(id)
-	err := res.Delete()
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 // ResetPassword resets the users password
 func (u *User) ResetPassword(id int, password string) error {
 	// create new password hash
@@ -178,4 +166,26 @@ func (u *User) AuthenticateUser(password string) (bool, error) {
 	}
 
 	return true, nil
+}
+
+// DeleteUser deletes a user
+func (u *User) DeleteUser(id int) error {
+	var user User
+
+	collection := upper.Collection(u.Table())
+	res := collection.Find(id)
+
+	// check if user exists
+	err := res.One(&user)
+	if err != nil {
+		return err
+	}
+
+	// delete user
+	err = res.Delete()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
