@@ -13,7 +13,7 @@ import (
 )
 
 type Token struct {
-	ID        int       `db:"id" json:"id"`
+	ID        int       `db:"id,omitempty" json:"id"`
 	UserID    int       `db:"user_id" json:"user_id"`
 	FirstName string    `db:"first_name" json:"first_name"`
 	Email     string    `db:"email" json:"email"`
@@ -138,28 +138,6 @@ func (t *Token) GetTokenByToken(plainText string) (token *Token, err error) {
 	return token, nil
 }
 
-func (t *Token) DeleteTokenByID(id int) error {
-	collection := upper.Collection(t.Table())
-	res := collection.Find(up.Cond{"id =": id})
-	err := res.Delete()
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (t *Token) DeleteTokenByToken(plainText string) error {
-	collection := upper.Collection(t.Table())
-	res := collection.Find(up.Cond{"token =": plainText})
-	err := res.Delete()
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (t *Token) AuthenticateToken(r *http.Request) (u *User, err error) {
 	// get authorization header
 	authorizationHeader := r.Header.Get("Authorization")
@@ -199,9 +177,9 @@ func (t *Token) AuthenticateToken(r *http.Request) (u *User, err error) {
 	return u, nil
 }
 
-func (t *Token) ValidToken(authToken string) (bool, error) {
+func (t *Token) ValidateToken(token string) (bool, error) {
 	// get user of token
-	u, err := t.GetUserForToken(authToken)
+	u, err := t.GetUserForToken(token)
 	if err != nil {
 		return false, errors.New("user not found")
 	}
@@ -217,4 +195,26 @@ func (t *Token) ValidToken(authToken string) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func (t *Token) DeleteTokenByID(id int) error {
+	collection := upper.Collection(t.Table())
+	res := collection.Find(up.Cond{"id =": id})
+	err := res.Delete()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (t *Token) DeleteTokenByToken(plainText string) error {
+	collection := upper.Collection(t.Table())
+	res := collection.Find(up.Cond{"token =": plainText})
+	err := res.Delete()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

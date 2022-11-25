@@ -8,6 +8,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"testing"
 	"time"
@@ -362,5 +363,184 @@ func TestToken_GetTokensForUser(t *testing.T) {
 
 	if len(tokens) > 0 {
 		t.Error("tokens returned for non existing user")
+	}
+}
+
+func TestToken_GetTokenByID(t *testing.T) {
+	u, err := models.Users.GetUserByEmail(dummyUser.Email)
+	if err != nil {
+		t.Error("failed to get user: ", err)
+	}
+
+	_, err = models.Tokens.GetTokenByID(u.Token.ID)
+	if err != nil {
+		t.Error("error getting token by ID: ", err)
+	}
+}
+
+func TestToken_GetTokenByEmail(t *testing.T) {
+	u, err := models.Users.GetUserByEmail(dummyUser.Email)
+	if err != nil {
+		t.Error("failed to get user: ", err)
+	}
+
+	_, err = models.Tokens.GetTokenByEmail(u.Token.Email)
+	if err != nil {
+		t.Error("error getting token by email: ", err)
+	}
+}
+
+func TestToken_GetTokenByToken(t *testing.T) {
+	u, err := models.Users.GetUserByEmail(dummyUser.Email)
+	if err != nil {
+		t.Error("failed to get user: ", err)
+	}
+
+	_, err = models.Tokens.GetTokenByToken(u.Token.PlainText)
+	if err != nil {
+		t.Error("error getting token by token: ", err)
+	}
+
+	_, err = models.Tokens.GetTokenByToken("abc")
+	if err == nil {
+		t.Error("no error getting non existing token by token: ", err)
+	}
+}
+
+var testToken_authData = []struct {
+	testName    string
+	token       string
+	email       string
+	errExpected bool
+	errMessage  string
+}{
+	{"invalid_token", "abcdefghijklmnopqrstuvwxyz", "not@important.com", true, "invalid token accepted as valid"},
+	{"invalid_token_length", "abcdefghijklmnopqrstuvwxy", "not@important.com", true, "token of wrong length accepted as valid"},
+	{"no_user", "abcdefghijklmnopqrstuvwxyz", "invalid@user.com", true, "no user, but token accepted as valid"},
+	{"valid_token", "", dummyUser.Email, false, "valid token reported as invalid"},
+}
+
+func TestToken_AuthenticateToken(t *testing.T) {
+	for _, tt := range testToken_authData {
+		var token string
+
+		// get a user and token if needed
+		if tt.email == dummyUser.Email {
+			user, err := models.Users.GetUserByEmail(tt.email)
+			if err != nil {
+				t.Error("failed to get user: ", err)
+			}
+			token = user.Token.PlainText
+		} else {
+			token = tt.token
+		}
+
+		req, _ := http.NewRequest("GET", "/", nil)
+		req.Header.Add("Authorization", "Bearer "+token)
+
+		_, err := models.Tokens.AuthenticateToken(req)
+		if tt.errExpected && err == nil {
+			t.Errorf("%s: %s", tt.testName, tt.errMessage)
+		} else if !tt.errExpected && err != nil {
+			t.Errorf("%s: %s - %s", tt.testName, tt.errMessage, err)
+		} else {
+			t.Logf("passed %s", tt.testName)
+		}
+	}
+}
+
+func TestToken_DeleteTokenByToken(t *testing.T) {
+	user, err := models.Users.GetUserByEmail(dummyUser.Email)
+	if err != nil {
+		t.Error("error getting the user: ", err)
+	}
+
+	err = models.Tokens.DeleteTokenByToken(user.Token.PlainText)
+	if err != nil {
+		t.Error("error deleting token: ", err)
+	}
+}
+
+func TestToken_ExpiredToken(t *testing.T) {
+	user, err := models.Users.GetUserByEmail(dummyUser.Email)
+	if err != nil {
+		t.Error("error getting the user: ", err)
+	}
+
+	// create and insert a new expired token
+	token, err := models.Tokens.GenerateToken(user.ID, -time.Hour*1)
+	if err != nil {
+		t.Error("error creating expired token: ", err)
+	}
+
+	err = models.Tokens.InsertToken(*token, *user)
+	if err != nil {
+		t.Error("error inserting expired token: ", err)
+	}
+
+	req, _ := http.NewRequest("GET", "/", nil)
+	req.Header.Add("Authorization", "Bearer "+token.PlainText)
+
+	_, err = models.Tokens.AuthenticateToken(req)
+	if err == nil {
+		t.Error("failed to catch expired token")
+	}
+
+}
+
+func TestToken_BadHeader(t *testing.T) {
+	req, _ := http.NewRequest("GET", "/", nil)
+	_, err := models.Tokens.AuthenticateToken(req)
+	if err == nil {
+		t.Error("failed to catch missing auth header")
+	}
+
+	req.Header.Add("Authorization", "abc")
+	_, err = models.Tokens.AuthenticateToken(req)
+	if err == nil {
+		t.Error("failed to catch bad auth header")
+	}
+}
+
+func TestToken_DeleteTokenByID(t *testing.T) {
+	user, err := models.Users.GetUserByEmail(dummyUser.Email)
+	if err != nil {
+		t.Error("error getting the user: ", err)
+	}
+
+	err = models.Tokens.DeleteTokenByID(user.Token.ID)
+	if err != nil {
+		t.Error("error deleting token: ", err)
+	}
+}
+
+func TestToken_ValidateToken(t *testing.T) {
+	user, err := models.Users.GetUserByEmail(dummyUser.Email)
+	if err != nil {
+		t.Error("error getting user: ", err)
+	}
+
+	token, err := models.Tokens.GenerateToken(user.ID, 24*time.Hour)
+	if err != nil {
+		t.Error("error creating token: ", err)
+	}
+
+	err = models.Tokens.InsertToken(*token, *user)
+	if err != nil {
+		t.Error("error inserting token: ", err)
+	}
+
+	ok, err := models.Tokens.ValidateToken(token.PlainText)
+	if err != nil {
+		t.Error("error calling validate token: ", err)
+	}
+
+	if !ok {
+		t.Error("valid token reported as invalid")
+	}
+
+	ok, err = models.Tokens.ValidateToken("invalid_token")
+	if ok {
+		t.Error("invalid token reported as valid")
 	}
 }
