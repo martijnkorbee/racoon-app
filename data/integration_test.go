@@ -43,7 +43,8 @@ var resource *dockertest.Resource
 var pool *dockertest.Pool
 
 func TestMain(m *testing.M) {
-	os.Setenv("DATABASE_TYPE", "postgres")
+	_ = os.Setenv("DATABASE_TYPE", "postgres")
+	_ = os.Setenv("UPPER_DB_LOG", "ERROR")
 
 	// connect to docker
 	p, err := dockertest.NewPool("")

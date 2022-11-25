@@ -14,6 +14,7 @@ func TestNew(t *testing.T) {
 	defer fakeDB.Close()
 
 	_ = os.Setenv("DATABASE_TYPE", "postgres")
+	_ = os.Setenv("UPPER_DB_LOG", "ERROR")
 	m := New(fakeDB)
 
 	if fmt.Sprintf("%T", m) != "data.Models" {
