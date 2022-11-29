@@ -3,6 +3,7 @@ package main
 import (
 	"RacoonApp/data"
 	"RacoonApp/handlers"
+	"RacoonApp/middleware"
 	"log"
 	"os"
 
@@ -24,19 +25,25 @@ func initApplication() *application {
 
 	racoon.AppName = "RacoonApp"
 
+	myMiddleware := &middleware.Middleware{
+		App: racoon,
+	}
+
 	myHandlers := &handlers.Handlers{
 		App: racoon,
 	}
 
 	app := &application{
-		App:      racoon,
-		Handlers: myHandlers,
+		App:        racoon,
+		Middleware: myMiddleware,
+		Handlers:   myHandlers,
 	}
 
 	app.App.Routes = app.routes()
 
 	app.Models = data.New(app.App.DB.ConnectionPool)
 	myHandlers.Models = &app.Models
+	app.Middleware.Models = &app.Models
 
 	return app
 }
