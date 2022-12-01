@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// render helper function to render pages
 func (h *Handlers) render(
 	w http.ResponseWriter,
 	r *http.Request,
@@ -13,6 +14,13 @@ func (h *Handlers) render(
 ) error {
 	return h.App.Render.Page(w, r, tmpl, variables, data)
 }
+
+// logError helper function to log errors
+func (h *Handlers) logError(v ...any) {
+	h.App.ErrorLog.Println(v...)
+}
+
+// session helpers
 
 func (h *Handlers) sessionPut(ctx context.Context, key string, value interface{}) {
 	h.App.SessionManager.Put(ctx, key, value)

@@ -24,17 +24,17 @@ func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
 // Sessions is the sessions route
 func (h *Handlers) SessionsTest(w http.ResponseWriter, r *http.Request) {
 	// create session data
-	h.App.SessionManager.Put(r.Context(), "foo", "bar")
+	h.sessionPut(r.Context(), "foo", "bar")
 	// extract session data
-	sessionData := h.App.SessionManager.GetString(r.Context(), "foo")
+	sessionData := h.sessionGet(r.Context(), "foo")
 
 	// create jet varmap
 	vars := make(jet.VarMap)
 	// add session data
 	vars.Set("foo", sessionData)
 
-	err := h.App.Render.Page(w, r, "sessions", vars, nil)
+	err := h.render(w, r, "sessions", vars, nil)
 	if err != nil {
-		h.App.ErrorLog.Println("error rendering", err)
+		h.logError("error rendering", err)
 	}
 }
