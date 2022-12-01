@@ -3,6 +3,8 @@ package handlers
 import (
 	"context"
 	"net/http"
+
+	"github.com/MartijnKorbee/GoRacoon"
 )
 
 // render helper function to render pages
@@ -18,6 +20,34 @@ func (h *Handlers) render(
 // logError helper function to log errors
 func (h *Handlers) logError(v ...any) {
 	h.App.ErrorLog.Println(v...)
+}
+
+// crypto helpers
+
+func (h *Handlers) encrypt(text string) (string, error) {
+	crypto := GoRacoon.Encryption{
+		Key: []byte(h.App.EncryptionKey),
+	}
+
+	encrypted, err := crypto.Encrypt(text)
+	if err != nil {
+		return "", err
+	}
+
+	return encrypted, nil
+}
+
+func (h *Handlers) deCrypt(encrypted string) (string, error) {
+	crypto := GoRacoon.Encryption{
+		Key: []byte(h.App.EncryptionKey),
+	}
+
+	decrypted, err := crypto.Decrypt(encrypted)
+	if err != nil {
+		return "", err
+	}
+
+	return decrypted, nil
 }
 
 // session helpers

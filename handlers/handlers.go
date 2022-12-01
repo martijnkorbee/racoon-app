@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"RacoonApp/data"
+	"fmt"
 	"net/http"
 
 	"github.com/CloudyKit/jet/v6"
@@ -37,4 +38,27 @@ func (h *Handlers) SessionsTest(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		h.logError("error rendering", err)
 	}
+}
+
+func (h *Handlers) TestCrypto(w http.ResponseWriter, r *http.Request) {
+	plainText := "Hello, World!"
+	fmt.Fprintln(w, "Unencrypted: "+plainText)
+
+	encrypted, err := h.encrypt(plainText)
+	if err != nil {
+		h.logError("error encrypting: ", err)
+		h.App.Error500(w, r)
+		return
+	}
+
+	fmt.Fprintln(w, "Encrypted: "+encrypted)
+
+	decrypted, err := h.deCrypt(encrypted)
+	if err != nil {
+		h.logError("error decrypting: ", err)
+		h.App.Error500(w, r)
+		return
+	}
+
+	fmt.Fprintln(w, "Decrypted: "+decrypted)
 }

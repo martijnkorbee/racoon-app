@@ -15,6 +15,7 @@ func (a *application) routes() *chi.Mux {
 	// add routes here
 	a.get("/", a.Handlers.Home)
 	a.get("/sessions", a.Handlers.SessionsTest)
+	a.get("/test-crypto", a.Handlers.TestCrypto)
 
 	// user routes
 	a.post("/users/login", a.Handlers.PostUserLogin)
