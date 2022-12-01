@@ -13,14 +13,16 @@ func (a *application) routes() *chi.Mux {
 	// middleware must come before any routes
 
 	// add routes here
-	a.App.Routes.Get("/", a.Handlers.Home)
-	a.App.Routes.Get("/sessions", a.Handlers.SessionsTest)
-	a.App.Routes.Get("/users/login", a.Handlers.UserLogin)
-	a.App.Routes.Post("/users/login", a.Handlers.PostUserLogin)
-	a.App.Routes.Get("/users/logout", a.Handlers.UserLogout)
+	a.get("/", a.Handlers.Home)
+	a.get("/sessions", a.Handlers.SessionsTest)
+
+	// user routes
+	a.post("/users/login", a.Handlers.PostUserLogin)
+	a.get("/users/login", a.Handlers.UserLogin)
+	a.get("/users/logout", a.Handlers.UserLogout)
 
 	// db test routes
-	a.App.Routes.Get("/create-user", func(w http.ResponseWriter, r *http.Request) {
+	a.get("/create-user", func(w http.ResponseWriter, r *http.Request) {
 		u := data.User{
 			FirstName: "Martijn",
 			LastName:  "Korbee",
@@ -38,7 +40,7 @@ func (a *application) routes() *chi.Mux {
 		fmt.Fprintf(w, "User created with ID: %d", id)
 	})
 
-	a.App.Routes.Get("/get-all-users", func(w http.ResponseWriter, r *http.Request) {
+	a.get("/get-all-users", func(w http.ResponseWriter, r *http.Request) {
 		users, err := a.Models.Users.GetAll()
 		if err != nil {
 			a.App.ErrorLog.Println(err)
@@ -50,7 +52,7 @@ func (a *application) routes() *chi.Mux {
 		}
 	})
 
-	a.App.Routes.Get("/get-user/{id}", func(w http.ResponseWriter, r *http.Request) {
+	a.get("/get-user/{id}", func(w http.ResponseWriter, r *http.Request) {
 		id, _ := strconv.Atoi(chi.URLParam(r, "id"))
 
 		user, err := a.Models.Users.GetUserByID(id)
@@ -62,7 +64,7 @@ func (a *application) routes() *chi.Mux {
 		fmt.Fprintf(w, "ID: %d\tFirstname: %s", user.ID, user.FirstName)
 	})
 
-	a.App.Routes.Get("/update-user/{id}", func(w http.ResponseWriter, r *http.Request) {
+	a.get("/update-user/{id}", func(w http.ResponseWriter, r *http.Request) {
 		id, _ := strconv.Atoi(chi.URLParam(r, "id"))
 
 		user, err := a.Models.Users.GetUserByID(id)
