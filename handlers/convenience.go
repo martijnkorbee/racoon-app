@@ -37,7 +37,7 @@ func (h *Handlers) encrypt(text string) (string, error) {
 	return encrypted, nil
 }
 
-func (h *Handlers) deCrypt(encrypted string) (string, error) {
+func (h *Handlers) decrypt(encrypted string) (string, error) {
 	crypto := GoRacoon.Encryption{
 		Key: []byte(h.App.EncryptionKey),
 	}

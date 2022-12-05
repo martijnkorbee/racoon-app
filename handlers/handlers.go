@@ -53,7 +53,7 @@ func (h *Handlers) TestCrypto(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintln(w, "Encrypted: "+encrypted)
 
-	decrypted, err := h.deCrypt(encrypted)
+	decrypted, err := h.decrypt(encrypted)
 	if err != nil {
 		h.logError("error decrypting: ", err)
 		h.App.Error500(w, r)
