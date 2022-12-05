@@ -3,6 +3,8 @@ package data
 import (
 	"database/sql"
 	"fmt"
+	"os"
+	"strings"
 
 	db2 "github.com/upper/db/v4"
 	"github.com/upper/db/v4/adapter/postgresql"
@@ -21,7 +23,14 @@ type Models struct {
 func New(dbPool *sql.DB) Models {
 	db = dbPool
 
-	upper, _ = postgresql.New(db)
+	if os.Getenv("DATABASE_TYPE") != "" {
+		switch strings.ToLower(os.Getenv("DATABASE_TYPE")) {
+		case "postgres", "postgresql":
+			upper, _ = postgresql.New(db)
+		default:
+			//
+		}
+	}
 
 	return Models{
 		Users:  User{},
