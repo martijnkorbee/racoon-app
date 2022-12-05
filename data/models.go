@@ -28,7 +28,7 @@ func New(dbPool *sql.DB) Models {
 		case "postgres", "postgresql":
 			upper, _ = postgresql.New(db)
 		default:
-			//
+			// do nothing
 		}
 	}
 
