@@ -1,6 +1,6 @@
 module RacoonApp
 
-go 1.19
+go 1.18
 
 replace github.com/MartijnKorbee/GoRacoon => ../GoRacoon
 
@@ -9,6 +9,9 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/MartijnKorbee/GoRacoon v0.0.0-00010101000000-000000000000
 	github.com/go-chi/chi/v5 v5.0.7
+	github.com/jackc/pgconn v1.13.0
+	github.com/jackc/pgx/v4 v4.17.2
+	github.com/ory/dockertest/v3 v3.9.1
 	github.com/upper/db/v4 v4.6.0
 	golang.org/x/crypto v0.3.0
 )
@@ -29,18 +32,17 @@ require (
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-migrate/migrate/v4 v4.15.2 // indirect
+	github.com/gomodule/redigo v1.8.9 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
-	github.com/jackc/pgconn v1.13.0 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgproto3/v2 v2.3.1 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
 	github.com/jackc/pgtype v1.12.0 // indirect
-	github.com/jackc/pgx/v4 v4.17.2 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/lib/pq v1.10.7 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
@@ -48,7 +50,6 @@ require (
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.0.2 // indirect
 	github.com/opencontainers/runc v1.1.2 // indirect
-	github.com/ory/dockertest/v3 v3.9.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/segmentio/fasthash v1.0.3 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
