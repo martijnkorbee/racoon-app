@@ -23,13 +23,11 @@ type Models struct {
 func New(dbPool *sql.DB) Models {
 	db = dbPool
 
-	if os.Getenv("DATABASE_TYPE") != "" {
-		switch strings.ToLower(os.Getenv("DATABASE_TYPE")) {
-		case "postgres", "postgresql":
-			upper, _ = postgresql.New(db)
-		default:
-			// do nothing
-		}
+	switch strings.ToLower(os.Getenv("DATABASE_TYPE")) {
+	case "postgres", "postgresql":
+		upper, _ = postgresql.New(db)
+	default:
+		// do nothing
 	}
 
 	return Models{
