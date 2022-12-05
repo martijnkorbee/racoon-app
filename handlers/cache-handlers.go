@@ -13,7 +13,6 @@ func (h *Handlers) SaveInCache(w http.ResponseWriter, r *http.Request) {
 	var userInput struct {
 		Name  string `json:"name"`
 		Value string `json:"value"`
-		CSRF  string `json:"csrf_token"`
 	}
 
 	err := h.App.ReadJSON(w, r, &userInput)
@@ -45,7 +44,6 @@ func (h *Handlers) GetFromCache(w http.ResponseWriter, r *http.Request) {
 
 	var userInput struct {
 		Name string `json:"name"`
-		CSRF string `json:"csrf_token"`
 	}
 
 	err := h.App.ReadJSON(w, r, &userInput)
@@ -81,7 +79,6 @@ func (h *Handlers) GetFromCache(w http.ResponseWriter, r *http.Request) {
 func (h *Handlers) DeleteFromCache(w http.ResponseWriter, r *http.Request) {
 	var userInput struct {
 		Name string `json:"name"`
-		CSRF string `json:"csrf_token"`
 	}
 
 	err := h.App.ReadJSON(w, r, &userInput)
@@ -109,7 +106,6 @@ func (h *Handlers) DeleteFromCache(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handlers) EmptyCache(w http.ResponseWriter, r *http.Request) {
 	var userInput struct {
-		CSRF string `json:"csrf_token"`
 	}
 
 	err := h.App.ReadJSON(w, r, &userInput)
