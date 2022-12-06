@@ -34,14 +34,14 @@ func initApplication() *application {
 	}
 
 	app := &application{
-		App:        racoon,
+		Racoon:     racoon,
 		Middleware: myMiddleware,
 		Handlers:   myHandlers,
 	}
 
-	app.App.Routes = app.routes()
+	app.Racoon.Routes = app.routes()
 
-	app.Models = data.New(app.App.DB.ConnectionPool)
+	app.Models = data.New(app.Racoon.DB.ConnectionPool)
 	myHandlers.Models = &app.Models
 	app.Middleware.Models = &app.Models
 

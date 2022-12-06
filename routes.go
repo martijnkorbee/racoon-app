@@ -34,14 +34,14 @@ func (a *application) routes() *chi.Mux {
 		u := data.User{
 			FirstName: "Martijn",
 			LastName:  "Korbee",
-			Email:     fmt.Sprintf("%s@test.nl", a.App.RandomStringGenerator(8)),
+			Email:     fmt.Sprintf("%s@test.nl", a.Racoon.RandomStringGenerator(8)),
 			Active:    1,
 			Password:  "password",
 		}
 
 		id, err := a.Models.Users.AddUser(u)
 		if err != nil {
-			a.App.ErrorLog.Println(err)
+			a.Racoon.ErrorLog.Println(err)
 			return
 		}
 
@@ -51,7 +51,7 @@ func (a *application) routes() *chi.Mux {
 	a.get("/get-all-users", func(w http.ResponseWriter, r *http.Request) {
 		users, err := a.Models.Users.GetAll()
 		if err != nil {
-			a.App.ErrorLog.Println(err)
+			a.Racoon.ErrorLog.Println(err)
 			return
 		}
 
@@ -65,7 +65,7 @@ func (a *application) routes() *chi.Mux {
 
 		user, err := a.Models.Users.GetUserByID(id)
 		if err != nil {
-			a.App.ErrorLog.Println(err)
+			a.Racoon.ErrorLog.Println(err)
 			return
 		}
 
@@ -77,14 +77,14 @@ func (a *application) routes() *chi.Mux {
 
 		user, err := a.Models.Users.GetUserByID(id)
 		if err != nil {
-			a.App.ErrorLog.Println(err)
+			a.Racoon.ErrorLog.Println(err)
 			return
 		}
 
-		user.FirstName = a.App.RandomStringGenerator(6)
+		user.FirstName = a.Racoon.RandomStringGenerator(6)
 		user.LastName = ""
 
-		validator := a.App.Validator(nil)
+		validator := a.Racoon.Validator(nil)
 
 		validator.Check(user.LastName != "", "last_name", "last name cannot be an empty string")
 
@@ -95,7 +95,7 @@ func (a *application) routes() *chi.Mux {
 
 		err = a.Models.Users.UpdateUser(*user)
 		if err != nil {
-			a.App.ErrorLog.Println(err)
+			a.Racoon.ErrorLog.Println(err)
 			return
 		}
 
@@ -104,7 +104,7 @@ func (a *application) routes() *chi.Mux {
 
 	// static routes
 	fileServer := http.FileServer(http.Dir("./public"))
-	a.App.Routes.Handle("/public/*", http.StripPrefix("/public", fileServer))
+	a.Racoon.Routes.Handle("/public/*", http.StripPrefix("/public", fileServer))
 
-	return a.App.Routes
+	return a.Racoon.Routes
 }
