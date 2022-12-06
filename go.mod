@@ -17,7 +17,6 @@ require (
 )
 
 require (
-	github.com/AndreasBriese/bbloom v0.0.0-20190306092124-e2d15f34fcf9 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
 	github.com/CloudyKit/fastprinter v0.0.0-20200109182630-33d98a066a53 // indirect
 	github.com/Microsoft/go-winio v0.5.2 // indirect
@@ -25,13 +24,13 @@ require (
 	github.com/alexedwards/scs/badgerstore v0.0.0-20220528130143-d93ace5be94b // indirect
 	github.com/alexedwards/scs/postgresstore v0.0.0-20220528130143-d93ace5be94b // indirect
 	github.com/alexedwards/scs/redisstore v0.0.0-20220528130143-d93ace5be94b // indirect
+	github.com/alexedwards/scs/sqlite3store v0.0.0-20220528130143-d93ace5be94b // indirect
 	github.com/alexedwards/scs/v2 v2.5.0 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/containerd/continuity v0.3.0 // indirect
-	github.com/dgraph-io/badger v1.6.1 // indirect
 	github.com/dgraph-io/badger/v3 v3.2103.4 // indirect
 	github.com/dgraph-io/ristretto v0.1.1 // indirect
 	github.com/docker/cli v20.10.14+incompatible // indirect
@@ -61,6 +60,7 @@ require (
 	github.com/justinas/nosurf v1.1.1 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/lib/pq v1.10.7 // indirect
+	github.com/mattn/go-sqlite3 v1.14.10 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/moby/term v0.0.0-20210619224110-3f7ff695adc6 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
