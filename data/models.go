@@ -1,17 +1,10 @@
 package data
 
 import (
-	"database/sql"
 	"fmt"
-	"os"
-	"strings"
 
-	db2 "github.com/upper/db/v4"
-	"github.com/upper/db/v4/adapter/postgresql"
+	"github.com/upper/db/v4"
 )
-
-var db *sql.DB
-var upper db2.Session
 
 type Models struct {
 	// any models inserted here (and in the New function)
@@ -20,15 +13,10 @@ type Models struct {
 	Tokens Token
 }
 
-func New(dbPool *sql.DB) Models {
-	db = dbPool
+var upper db.Session
 
-	switch strings.ToLower(os.Getenv("DATABASE_TYPE")) {
-	case "postgres", "postgresql":
-		upper, _ = postgresql.New(db)
-	default:
-		// do nothing
-	}
+func New(db db.Session) Models {
+	upper = db
 
 	return Models{
 		Users:  User{},
@@ -36,7 +24,7 @@ func New(dbPool *sql.DB) Models {
 	}
 }
 
-func getInsertID(i db2.ID) int {
+func getInsertID(i db.ID) int {
 	idType := fmt.Sprintf("%T", i)
 	if idType == "int64" {
 		return int(i.(int64))
