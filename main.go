@@ -1,15 +1,15 @@
 package main
 
 import (
-	"RacoonApp/data"
-	"RacoonApp/handlers"
-	"RacoonApp/middleware"
+	"racoonapp/data"
+	"racoonapp/handlers"
+	"racoonapp/middleware"
 
-	"github.com/MartijnKorbee/GoRacoon"
+	_ "github.com/martijnkorbee/goracoon"
 )
 
 type application struct {
-	Racoon     *GoRacoon.GoRacoon
+	Racoon     *goracoon.goracoon
 	Middleware *middleware.Middleware
 	Handlers   *handlers.Handlers
 	Models     data.Models

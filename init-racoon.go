@@ -1,13 +1,13 @@
 package main
 
 import (
-	"RacoonApp/data"
-	"RacoonApp/handlers"
-	"RacoonApp/middleware"
 	"log"
 	"os"
+	"racoonapp/data"
+	"racoonapp/handlers"
+	"racoonapp/middleware"
 
-	"github.com/MartijnKorbee/GoRacoon"
+	_ "github.com/martijnkorbee/goracoon"
 )
 
 func initApplication() *application {
@@ -16,14 +16,14 @@ func initApplication() *application {
 		log.Fatal(err)
 	}
 
-	// init GoRacoon
-	racoon := &GoRacoon.GoRacoon{}
+	// init goracoon
+	racoon := &goracoon.goracoon{}
 	err = racoon.New(path)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	racoon.AppName = "RacoonApp"
+	racoon.AppName = "racoonapp"
 
 	myMiddleware := &middleware.Middleware{
 		App: racoon,

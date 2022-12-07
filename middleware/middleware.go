@@ -1,12 +1,10 @@
 package middleware
 
 import (
-	"RacoonApp/data"
-
-	"github.com/MartijnKorbee/GoRacoon"
+	"racoonapp/data"
 )
 
 type Middleware struct {
-	App    *GoRacoon.GoRacoon
+	App    *goracoon.goracoon
 	Models *data.Models
 }
