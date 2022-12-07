@@ -1,14 +1,12 @@
 package handlers
 
 import (
-	"RacoonApp/data"
 	"net/http"
-
-	"github.com/MartijnKorbee/GoRacoon"
+	"racoonapp/data"
 )
 
 type Handlers struct {
-	App    *GoRacoon.GoRacoon
+	App    *goracoon.goracoon
 	Models *data.Models
 }
 

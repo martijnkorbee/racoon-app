@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/MartijnKorbee/GoRacoon"
+	_ "github.com/martijnkorbee/goracoon"
 )
 
 // render helper function to render pages
@@ -25,7 +25,7 @@ func (h *Handlers) logError(v ...any) {
 // crypto helpers
 
 func (h *Handlers) encrypt(text string) (string, error) {
-	crypto := GoRacoon.Encryption{
+	crypto := goracoon.Encryption{
 		Key: []byte(h.App.EncryptionKey),
 	}
 
@@ -38,7 +38,7 @@ func (h *Handlers) encrypt(text string) (string, error) {
 }
 
 func (h *Handlers) decrypt(encrypted string) (string, error) {
-	crypto := GoRacoon.Encryption{
+	crypto := goracoon.Encryption{
 		Key: []byte(h.App.EncryptionKey),
 	}
 

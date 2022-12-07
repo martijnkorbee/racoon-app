@@ -1,11 +1,11 @@
-module RacoonApp
+module racoonapp
 
 go 1.18
 
 require (
 	github.com/CloudyKit/jet/v6 v6.1.0
 	github.com/DATA-DOG/go-sqlmock v1.5.0
-	github.com/MartijnKorbee/GoRacoon v0.0.0
+	github.com/martijnkorbee/goracoon v0.0.0
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/ory/dockertest/v3 v3.9.1
 	github.com/upper/db/v4 v4.6.0
@@ -46,12 +46,6 @@ require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
-	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
-	github.com/jackc/pgio v1.0.0 // indirect
-	github.com/jackc/pgpassfile v1.0.0 // indirect
-	github.com/jackc/pgproto3/v2 v2.3.1 // indirect
-	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
-	github.com/jackc/pgtype v1.12.0 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/justinas/nosurf v1.1.1 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect

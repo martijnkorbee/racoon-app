@@ -1,1 +1,1 @@
-# RacoonApp skeleton application
+# racoonapp skeleton application
