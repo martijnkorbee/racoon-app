@@ -1,0 +1,35 @@
+BINARY_NAME=RacoonApp
+
+build:
+	@go mod vendor
+	@echo "Building ${BINARY_NAME}..."
+	@go build -o tmp/${BINARY_NAME} .
+	@echo "${BINARY_NAME} has been built!"
+
+run: build
+	@echo "Starting ${BINARY_NAME}..."
+	@./tmp/${BINARY_NAME}
+	
+
+clean:
+	@echo "Cleaning..."
+	@go clean
+	@rm tmp/${BINARY_NAME}
+	@echo "Cleaning finished!"
+
+test:
+	@echo "Testing..."
+	@go test ./...
+	@echo "Testing done!"
+
+start: build
+	@echo "Starting ${BINARY_NAME}..."
+	@./tmp/${BINARY_NAME} &
+	@echo "${BINARY_NAME} has been started!"
+
+stop:
+	@echo "Stopping ${BINARY_NAME}..."
+	@-pkill -SIGTERM -f "./tmp/${BINARY_NAME}"
+	@echo "Stopped ${BINARY_NAME}!"
+
+restart: stop start

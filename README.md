@@ -1,0 +1,1 @@
+# RacoonApp skeleton application
