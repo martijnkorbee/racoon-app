@@ -13,15 +13,15 @@ import (
 )
 
 type Token struct {
-	ID        int       `db:"id,omitempty" json:"id"`
-	UserID    int       `db:"user_id" json:"user_id"`
-	FirstName string    `db:"first_name" json:"first_name"`
-	Email     string    `db:"email" json:"email"`
-	PlainText string    `db:"token" json:"token"`
-	Hash      []byte    `db:"token_hash" json:"-"`
-	CreatedAt time.Time `db:"created_at" json:"created_at"`
-	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
-	Expires   time.Time `db:"expiry" json:"expiry"`
+	ID        int    `db:"id,omitempty" json:"id"`
+	UserID    int    `db:"user_id" json:"user_id"`
+	FirstName string `db:"first_name" json:"first_name"`
+	Email     string `db:"email" json:"email"`
+	PlainText string `db:"token" json:"token"`
+	Hash      []byte `db:"token_hash" json:"-"`
+	CreatedAt string `db:"created_at" json:"created_at"`
+	UpdatedAt string `db:"updated_at" json:"updated_at"`
+	Expires   string `db:"expiry" json:"expiry"`
 }
 
 func (t *Token) Table() string {
@@ -31,7 +31,7 @@ func (t *Token) Table() string {
 func (t *Token) GenerateToken(userID int, ttl time.Duration) (token *Token, err error) {
 	token = &Token{
 		UserID:  userID,
-		Expires: time.Now().Add(ttl),
+		Expires: time.Now().Add(ttl).String(),
 	}
 
 	randomBytes := make([]byte, 16)
@@ -59,8 +59,8 @@ func (t *Token) InsertToken(token Token, u User) error {
 	}
 
 	// add new tokens
-	token.CreatedAt = time.Now()
-	token.UpdatedAt = time.Now()
+	token.CreatedAt = time.Now().String()
+	token.UpdatedAt = time.Now().String()
 	token.FirstName = u.FirstName
 	token.Email = u.Email
 
@@ -164,7 +164,11 @@ func (t *Token) AuthenticateToken(r *http.Request) (u *User, err error) {
 	}
 
 	// check token expiry
-	if token.Expires.Before(time.Now()) {
+	expiry, err := time.Parse("2006-01-02T15:04:05.999999999", token.Expires)
+	if err != nil {
+		return nil, errors.New("error parsing time from database")
+	}
+	if expiry.Before(time.Now()) {
 		return nil, errors.New("expired token")
 	}
 
@@ -188,9 +192,12 @@ func (t *Token) ValidateToken(token string) (bool, error) {
 	if u.Token.PlainText == "" {
 		return false, errors.New("token not found")
 	}
-
 	// check token expiry
-	if u.Token.Expires.Before(time.Now()) {
+	expiry, err := time.Parse("2006-01-02T15:04:05.999999999", u.Token.Expires)
+	if err != nil {
+		return false, errors.New("error parsing time from database")
+	}
+	if expiry.Before(time.Now()) {
 		return false, errors.New("expired token")
 	}
 

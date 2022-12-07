@@ -82,7 +82,7 @@ func (a *application) routes() *chi.Mux {
 		}
 
 		user.FirstName = a.Racoon.RandomStringGenerator(6)
-		user.LastName = ""
+		user.LastName = "changed lastname"
 
 		validator := a.Racoon.Validator(nil)
 
@@ -100,6 +100,18 @@ func (a *application) routes() *chi.Mux {
 		}
 
 		fmt.Fprintf(w, "User update: OK\n\nID: %d\tFirstname: %s", user.ID, user.FirstName)
+	})
+
+	a.get("/delete-user/{id}", func(w http.ResponseWriter, r *http.Request) {
+		id, _ := strconv.Atoi(chi.URLParam(r, "id"))
+
+		err := a.Models.Users.DeleteUser(id)
+		if err != nil {
+			a.Racoon.ErrorLog.Println(err)
+			return
+		}
+
+		fmt.Fprintf(w, "user deleted with id: %d", id)
 	})
 
 	// static routes

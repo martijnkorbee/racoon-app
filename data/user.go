@@ -10,15 +10,15 @@ import (
 )
 
 type User struct {
-	ID        int       `db:"id,omitempty"`
-	FirstName string    `db:"first_name"`
-	LastName  string    `db:"last_name"`
-	Email     string    `db:"email"`
-	Active    int       `db:"user_active"`
-	Password  string    `db:"password"`
-	CreatedAt time.Time `db:"created_at"`
-	UpdatedAt time.Time `db:"updated_at"`
-	Token     Token     `db:"-"`
+	ID        int    `db:"id,omitempty"`
+	FirstName string `db:"first_name"`
+	LastName  string `db:"last_name"`
+	Email     string `db:"email"`
+	Active    int    `db:"user_active"`
+	Password  string `db:"password"`
+	CreatedAt string `db:"created_at"`
+	UpdatedAt string `db:"updated_at"`
+	Token     Token  `db:"-"`
 }
 
 func (u *User) Table() string {
@@ -33,8 +33,8 @@ func (u *User) AddUser(user User) (ID int, err error) {
 		return 0, err
 	}
 
-	user.CreatedAt = time.Now()
-	user.UpdatedAt = time.Now()
+	user.CreatedAt = time.Now().String()
+	user.UpdatedAt = time.Now().String()
 	user.Password = string(newHash)
 
 	collection := upper.Collection(u.Table())
@@ -118,7 +118,7 @@ func (u *User) GetUserByEmail(email string) (*User, error) {
 
 // UpdateUser updates a user
 func (u *User) UpdateUser(user User) error {
-	user.UpdatedAt = time.Now()
+	user.UpdatedAt = time.Now().String()
 
 	collection := upper.Collection(u.Table())
 	res := collection.Find(user.ID)
