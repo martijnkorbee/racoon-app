@@ -2,7 +2,3 @@
 .idea
 go.sum
 coverage.out
-migrations/*
-tmp/*
-logs/*
-
