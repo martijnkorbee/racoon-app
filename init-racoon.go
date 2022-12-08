@@ -7,7 +7,7 @@ import (
 	"racoonapp/handlers"
 	"racoonapp/middleware"
 
-	_ "github.com/martijnkorbee/goracoon"
+	"github.com/martijnkorbee/goracoon"
 )
 
 func initApplication() *application {
@@ -17,7 +17,7 @@ func initApplication() *application {
 	}
 
 	// init goracoon
-	racoon := &goracoon.goracoon{}
+	racoon := &goracoon.Goracoon{}
 	err = racoon.New(path)
 	if err != nil {
 		log.Fatal(err)
