@@ -5,11 +5,11 @@ import (
 	"racoonapp/handlers"
 	"racoonapp/middleware"
 
-	_ "github.com/martijnkorbee/goracoon"
+	"github.com/martijnkorbee/goracoon"
 )
 
 type application struct {
-	Racoon     *goracoon.goracoon
+	Racoon     *goracoon.Goracoon
 	Middleware *middleware.Middleware
 	Handlers   *handlers.Handlers
 	Models     data.Models
