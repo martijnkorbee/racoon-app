@@ -11,7 +11,7 @@
     <div class="d-flex align-items-center justify-content-center vh-100">
         <div>
             <img src="/public/images/goracoon.png" width="100" class="mb-5">
-            <h1>goracoon</h1>
+            <h1>GoRacoon</h1>
             <hr>
             <p class="mb-0"><small class="text-muted">Go build something awesome.</small></p>
         </div>
