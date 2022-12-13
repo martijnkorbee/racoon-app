@@ -8,7 +8,7 @@ import (
 )
 
 type Handlers struct {
-	App    *goracoon.Goracoon
+	Racoon *goracoon.Goracoon
 	Models *data.Models
 }
 
@@ -16,6 +16,6 @@ type Handlers struct {
 func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
 	err := h.render(w, r, "home", nil, nil)
 	if err != nil {
-		h.App.ErrorLog.Println("error rendering:", err)
+		h.Racoon.ErrorLog.Println("error rendering:", err)
 	}
 }

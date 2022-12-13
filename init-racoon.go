@@ -26,11 +26,11 @@ func initApplication() *application {
 	racoon.AppName = "racoonapp"
 
 	myMiddleware := &middleware.Middleware{
-		App: racoon,
+		Racoon: racoon,
 	}
 
 	myHandlers := &handlers.Handlers{
-		App: racoon,
+		Racoon: racoon,
 	}
 
 	app := &application{
