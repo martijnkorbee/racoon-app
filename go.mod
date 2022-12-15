@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/go-chi/chi/v5 v5.0.7
-	github.com/martijnkorbee/goracoon@latest
+	github.com/martijnkorbee/goracoon v0.0.6
 	github.com/upper/db/v4 v4.6.0
 )
 
