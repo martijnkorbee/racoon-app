@@ -14,24 +14,24 @@ func (a *application) routes() *chi.Mux {
 	// middleware must come before any routes
 
 	// add routes here
-	a.get("/", a.Handlers.Home)
-	a.get("/sessions", a.Handlers.SessionsTest)
-	a.get("/test-crypto", a.Handlers.TestCrypto)
+	a.Racoon.Routes.Get("/", a.Handlers.Home)
+	a.Racoon.Routes.Get("/sessions", a.Handlers.SessionsTest)
+	a.Racoon.Routes.Get("/test-crypto", a.Handlers.TestCrypto)
 
 	// user routes
-	a.post("/users/login", a.Handlers.PostUserLogin)
-	a.get("/users/login", a.Handlers.UserLogin)
-	a.get("/users/logout", a.Handlers.UserLogout)
+	a.Racoon.Routes.Post("/users/login", a.Handlers.PostUserLogin)
+	a.Racoon.Routes.Get("/users/login", a.Handlers.UserLogin)
+	a.Racoon.Routes.Get("/users/logout", a.Handlers.UserLogout)
 
 	// cache tests
-	a.get("/api/cache-test", a.Handlers.ShowCachePage)
-	a.post("/api/save-in-cache", a.Handlers.SaveInCache)
-	a.post("/api/get-from-cache", a.Handlers.GetFromCache)
-	a.post("/api/delete-from-cache", a.Handlers.DeleteFromCache)
-	a.post("/api/empty-cache", a.Handlers.EmptyCache)
+	a.Racoon.Routes.Get("/api/cache-test", a.Handlers.ShowCachePage)
+	a.Racoon.Routes.Post("/api/save-in-cache", a.Handlers.SaveInCache)
+	a.Racoon.Routes.Post("/api/get-from-cache", a.Handlers.GetFromCache)
+	a.Racoon.Routes.Post("/api/delete-from-cache", a.Handlers.DeleteFromCache)
+	a.Racoon.Routes.Post("/api/empty-cache", a.Handlers.EmptyCache)
 
 	// mailer tests
-	a.get("/mail/test", func(w http.ResponseWriter, r *http.Request) {
+	a.Racoon.Routes.Get("/mail/test", func(w http.ResponseWriter, r *http.Request) {
 		msg := mailer.Message{
 			To:          []string{"m.korbee@numatic.nl"},
 			Subject:     "test subject",
@@ -48,7 +48,7 @@ func (a *application) routes() *chi.Mux {
 	})
 
 	// db test routes
-	a.get("/create-user", func(w http.ResponseWriter, r *http.Request) {
+	a.Racoon.Routes.Get("/create-user", func(w http.ResponseWriter, r *http.Request) {
 		u := data.User{
 			FirstName: "Martijn",
 			LastName:  "Korbee",
@@ -66,7 +66,7 @@ func (a *application) routes() *chi.Mux {
 		fmt.Fprintf(w, "User created with ID: %d", id)
 	})
 
-	a.get("/get-all-users", func(w http.ResponseWriter, r *http.Request) {
+	a.Racoon.Routes.Get("/get-all-users", func(w http.ResponseWriter, r *http.Request) {
 		users, err := a.Models.Users.GetAll()
 		if err != nil {
 			a.Racoon.ErrorLog.Println(err)
@@ -78,7 +78,7 @@ func (a *application) routes() *chi.Mux {
 		}
 	})
 
-	a.get("/get-user/{id}", func(w http.ResponseWriter, r *http.Request) {
+	a.Racoon.Routes.Get("/get-user/{id}", func(w http.ResponseWriter, r *http.Request) {
 		id, _ := strconv.Atoi(chi.URLParam(r, "id"))
 
 		user, err := a.Models.Users.GetUserByID(id)
@@ -90,7 +90,7 @@ func (a *application) routes() *chi.Mux {
 		fmt.Fprintf(w, "ID: %d\tFirstname: %s", user.ID, user.FirstName)
 	})
 
-	a.get("/update-user/{id}", func(w http.ResponseWriter, r *http.Request) {
+	a.Racoon.Routes.Get("/update-user/{id}", func(w http.ResponseWriter, r *http.Request) {
 		id, _ := strconv.Atoi(chi.URLParam(r, "id"))
 
 		user, err := a.Models.Users.GetUserByID(id)
@@ -120,7 +120,7 @@ func (a *application) routes() *chi.Mux {
 		fmt.Fprintf(w, "User update: OK\n\nID: %d\tFirstname: %s", user.ID, user.FirstName)
 	})
 
-	a.get("/delete-user/{id}", func(w http.ResponseWriter, r *http.Request) {
+	a.Racoon.Routes.Get("/delete-user/{id}", func(w http.ResponseWriter, r *http.Request) {
 		id, _ := strconv.Atoi(chi.URLParam(r, "id"))
 
 		err := a.Models.Users.DeleteUser(id)
