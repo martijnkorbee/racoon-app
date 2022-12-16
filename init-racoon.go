@@ -1,11 +1,11 @@
 package main
 
 import (
-	"RacoonApp/data"
-	"RacoonApp/handlers"
-	"RacoonApp/middleware"
 	"log"
 	"os"
+	"racoonapp/data"
+	"racoonapp/handlers"
+	"racoonapp/middleware"
 
 	"github.com/martijnkorbee/goracoon"
 )
@@ -23,7 +23,7 @@ func initApplication() *application {
 		log.Fatal(err)
 	}
 
-	racoon.AppName = "RacoonApp"
+	racoon.AppName = "racoonapp"
 
 	myMiddleware := &middleware.Middleware{
 		App: racoon,

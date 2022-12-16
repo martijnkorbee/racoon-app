@@ -1,9 +1,9 @@
 package main
 
 import (
-	"RacoonApp/data"
-	"RacoonApp/handlers"
-	"RacoonApp/middleware"
+	"racoonapp/data"
+	"racoonapp/handlers"
+	"racoonapp/middleware"
 
 	"github.com/martijnkorbee/goracoon"
 )

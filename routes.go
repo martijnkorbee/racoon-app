@@ -1,9 +1,9 @@
 package main
 
 import (
-	"RacoonApp/data"
 	"fmt"
 	"net/http"
+	"racoonapp/data"
 	"strconv"
 
 	"github.com/go-chi/chi/v5"

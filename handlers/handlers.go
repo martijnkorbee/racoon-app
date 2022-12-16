@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"RacoonApp/data"
 	"fmt"
 	"net/http"
+	"racoonapp/data"
 
 	"github.com/CloudyKit/jet/v6"
 	"github.com/martijnkorbee/goracoon"

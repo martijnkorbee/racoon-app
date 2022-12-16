@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"RacoonApp/data"
+	"racoonapp/data"
 
 	"github.com/martijnkorbee/goracoon"
 )
