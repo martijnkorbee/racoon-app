@@ -5,7 +5,7 @@ import (
 	"RacoonApp/handlers"
 	"RacoonApp/middleware"
 
-	"github.com/MartijnKorbee/GoRacoon"
+	"github.com/martijnkorbee/goracoon"
 )
 
 type application struct {

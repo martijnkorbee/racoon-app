@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/MartijnKorbee/GoRacoon"
+	"github.com/martijnkorbee/goracoon"
 )
 
 func initApplication() *application {

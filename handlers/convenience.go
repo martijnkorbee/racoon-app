@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/MartijnKorbee/GoRacoon"
+	"github.com/martijnkorbee/goracoon"
 )
 
 // render helper function to render pages

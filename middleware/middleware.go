@@ -3,7 +3,7 @@ package middleware
 import (
 	"RacoonApp/data"
 
-	"github.com/MartijnKorbee/GoRacoon"
+	"github.com/martijnkorbee/goracoon"
 )
 
 type Middleware struct {

@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/CloudyKit/jet/v6"
-	"github.com/MartijnKorbee/GoRacoon"
+	"github.com/martijnkorbee/goracoon"
 )
 
 type Handlers struct {
