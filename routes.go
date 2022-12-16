@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/martijnkorbee/goracoon/mailer"
 )
 
 func (a *application) routes() *chi.Mux {
@@ -28,6 +29,23 @@ func (a *application) routes() *chi.Mux {
 	a.post("/api/get-from-cache", a.Handlers.GetFromCache)
 	a.post("/api/delete-from-cache", a.Handlers.DeleteFromCache)
 	a.post("/api/empty-cache", a.Handlers.EmptyCache)
+
+	// mailer tests
+	a.get("/mail/test", func(w http.ResponseWriter, r *http.Request) {
+		msg := mailer.Message{
+			To:          []string{"m.korbee@numatic.nl"},
+			Subject:     "test subject",
+			Template:    "test",
+			Attachments: nil,
+			Data:        nil,
+		}
+
+		a.Racoon.Mail.Jobs <- msg
+		res := <-a.Racoon.Mail.Results
+		if res.Error != nil {
+			a.Racoon.ErrorLog.Println(res.Error)
+		}
+	})
 
 	// db test routes
 	a.get("/create-user", func(w http.ResponseWriter, r *http.Request) {
