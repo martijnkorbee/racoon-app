@@ -7,6 +7,6 @@ import (
 )
 
 type Middleware struct {
-	App    *GoRacoon.GoRacoon
+	App    *goracoon.Goracoon
 	Models *data.Models
 }

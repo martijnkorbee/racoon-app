@@ -9,7 +9,7 @@ import (
 )
 
 type application struct {
-	Racoon     *GoRacoon.GoRacoon
+	Racoon     *goracoon.Goracoon
 	Middleware *middleware.Middleware
 	Handlers   *handlers.Handlers
 	Models     data.Models

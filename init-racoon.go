@@ -17,7 +17,7 @@ func initApplication() *application {
 	}
 
 	// init GoRacoon
-	racoon := &GoRacoon.GoRacoon{}
+	racoon := &goracoon.Goracoon{}
 	err = racoon.New(path)
 	if err != nil {
 		log.Fatal(err)
