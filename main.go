@@ -17,7 +17,7 @@ type application struct {
 	Middleware *middleware.Middleware
 	Handlers   *handlers.Handlers
 	Models     data.Models
-	wg         *sync.WaitGroup
+	wg         sync.WaitGroup
 }
 
 func main() {
@@ -46,7 +46,7 @@ func (a *application) listenForShutdown() {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	s := <-quit
 
-	a.Racoon.InfoLog.Println("Received signal", s.String())
+	a.Racoon.InfoLog.Println("received signal", s.String())
 
 	a.shutdown()
 }

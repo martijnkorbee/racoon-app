@@ -50,7 +50,7 @@ func (a *application) routes() *chi.Mux {
 
 		a.wg.Add(1)
 		go func() {
-			a.Racoon.Mail.Send(msg)
+			a.Racoon.Mail.Jobs <- msg
 			a.wg.Done()
 
 			res := <-a.Racoon.Mail.Results

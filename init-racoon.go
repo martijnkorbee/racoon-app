@@ -6,7 +6,6 @@ import (
 	"racoonapp/data"
 	"racoonapp/handlers"
 	"racoonapp/middleware"
-	"sync"
 
 	"github.com/martijnkorbee/goracoon"
 )
@@ -38,7 +37,6 @@ func initApplication() *application {
 		Racoon:     racoon,
 		Middleware: myMiddleware,
 		Handlers:   myHandlers,
-		wg:         new(sync.WaitGroup),
 	}
 
 	app.Racoon.Routes = app.routes()
