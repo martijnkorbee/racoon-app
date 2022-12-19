@@ -30,6 +30,14 @@ func (a *application) routes() *chi.Mux {
 	a.Racoon.Routes.Post("/api/delete-from-cache", a.Handlers.DeleteFromCache)
 	a.Racoon.Routes.Post("/api/empty-cache", a.Handlers.EmptyCache)
 
+	// admin tests
+	a.Racoon.Routes.Get("/admin", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "allowd url")
+	})
+	a.Racoon.Routes.Get("/login", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "allowd url")
+	})
+
 	// mailer tests
 	a.Racoon.Routes.Get("/mail/test", func(w http.ResponseWriter, r *http.Request) {
 		msg := mailer.Message{
