@@ -1,4 +1,4 @@
-BINARY_NAME=racoonapp
+BINARY_NAME=${APP_NAME}
 
 build:
 	@go mod vendor

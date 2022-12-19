@@ -2,15 +2,13 @@ module racoonapp
 
 go 1.18
 
-replace github.com/martijnkorbee/goracoon => ../goracoon
-
 require (
 	github.com/CloudyKit/jet/v6 v6.1.0
 	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/jackc/pgconn v1.13.0
 	github.com/jackc/pgx/v4 v4.17.2
-	github.com/martijnkorbee/goracoon v0.0.6
+	github.com/martijnkorbee/goracoon v1.0.0
 	github.com/ory/dockertest/v3 v3.9.1
 	github.com/upper/db/v4 v4.6.0
 	golang.org/x/crypto v0.3.0
