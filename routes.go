@@ -48,8 +48,10 @@ func (a *application) routes() *chi.Mux {
 			Data:        nil,
 		}
 
+		a.wg.Add(1)
 		go func() {
 			a.Racoon.Mail.Send(msg)
+			a.wg.Done()
 
 			res := <-a.Racoon.Mail.Results
 			if res.Error != nil {
