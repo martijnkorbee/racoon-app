@@ -2,7 +2,7 @@ module racoonapp
 
 go 1.18
 
-replace github.com/martijnkorbee/goracoon => ../github.com/goracoon
+replace github.com/martijnkorbee/goracoon => ../goracoon
 
 require (
 	github.com/CloudyKit/jet/v6 v6.1.0

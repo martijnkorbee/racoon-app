@@ -40,11 +40,14 @@ func (a *application) routes() *chi.Mux {
 			Data:        nil,
 		}
 
-		a.Racoon.Mail.Jobs <- msg
-		res := <-a.Racoon.Mail.Results
-		if res.Error != nil {
-			a.Racoon.ErrorLog.Println(res.Error)
-		}
+		go func() {
+			a.Racoon.Mail.Send(msg)
+
+			res := <-a.Racoon.Mail.Results
+			if res.Error != nil {
+				a.Racoon.ErrorLog.Println(res.Error)
+			}
+		}()
 	})
 
 	// db test routes
