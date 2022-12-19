@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"os/signal"
 	"racoonapp/data"
@@ -33,7 +32,6 @@ func main() {
 }
 
 func (a *application) shutdown() {
-	fmt.Println("shutting down")
 	// put any clean up tasks here
 
 	// block untill the wait group is empty
