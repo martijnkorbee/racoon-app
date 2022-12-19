@@ -15,9 +15,6 @@
             <hr>
             <p class="mb-0"><small class="text-muted">Go build something awesome.</small></p>
             {{if .IsAuthenticated }}
-                <hr>
-                <p class="mb-0"><small>Authenticated! <a href="/users/logout">Logout</a>.</small></p>
-            {{end}}
         </div>
     </div>
 </div>
