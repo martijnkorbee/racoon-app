@@ -16,6 +16,6 @@ type Handlers struct {
 func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
 	err := h.Racoon.Render.Page(w, r, "home", nil, nil)
 	if err != nil {
-		h.Racoon.ErrorLog.Println("error rendering:", err)
+		h.App.Log.Error().Err(err).Msg("error rendering")
 	}
 }
