@@ -27,7 +27,7 @@ func main() {
 
 	err := app.Racoon.ListenAndServe()
 	if err != nil {
-		app.Racoon.ErrorLog.Panicln(err)
+		app.Racoon.Log.Panic().Err(err).Msg("")
 	}
 }
 
@@ -46,7 +46,7 @@ func (a *application) listenForShutdown() {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	s := <-quit
 
-	a.Racoon.InfoLog.Println("received signal", s.String())
+	a.Racoon.Log.Info().Msg(fmt.Sprintf("received signal: %s", s.String()))
 
 	a.shutdown()
 }
