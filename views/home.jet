@@ -14,7 +14,6 @@
             <h1>GoRacoon</h1>
             <hr>
             <p class="mb-0"><small class="text-muted">Go build something awesome.</small></p>
-            {{if .IsAuthenticated }}
         </div>
     </div>
 </div>
